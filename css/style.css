@@ -209,6 +209,56 @@ body{
 .footer-meta{font-size:.75rem;color:var(--text-dim);margin-bottom:18px;}
 .footer-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 
+/* ---------- GALLERY: staggered entrance + clickable ---------- */
+.gallery-item{
+  opacity:0;transform:translateY(24px) scale(0.96);
+  transition:opacity .6s ease, transform .6s ease;
+  cursor:pointer;
+}
+.gallery-item-visible{opacity:1;transform:translateY(0) scale(1);}
+
+/* ---------- LIGHTBOX ---------- */
+.lightbox{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(3,3,10,0.96);backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:16px;
+}
+.lightbox-stage{
+  width:100%;max-width:520px;max-height:70vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;touch-action:none;
+}
+.lightbox-stage img{
+  max-width:100%;max-height:70vh;object-fit:contain;
+  transition:transform .15s ease-out;border-radius:8px;
+}
+.lightbox-caption{
+  margin-top:16px;color:var(--text);font-family:var(--font-mono);font-size:.85rem;
+}
+.lightbox-hint{
+  margin-top:6px;color:var(--text-dim);font-family:var(--font-mono);font-size:.7rem;
+}
+.lightbox-close{position:absolute;top:20px;right:20px;}
+.lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  font-size:1.4rem;padding:8px 16px;
+}
+.lightbox-prev{left:12px;}
+.lightbox-next{right:12px;}
+
+/* ---------- LETTER TYPEWRITER ---------- */
+.letter-card{max-height:60vh;overflow-y:auto;scroll-behavior:smooth;}
+.letter-highlight{
+  color:var(--gold);font-weight:600;
+  text-shadow:0 0 12px rgba(245,196,83,0.35);
+}
+.letter-cursor{
+  display:inline-block;color:var(--cyan);margin-left:1px;
+  animation:blink-cursor 0.9s steps(1) infinite;
+}
+.letter-cursor-idle{animation-duration:1.4s;}
+
 /* ---------- GLASS / BUTTONS ---------- */
 .glass{
   background:var(--glass);

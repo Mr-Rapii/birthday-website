@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 
@@ -102,31 +102,32 @@
     </div>
   </section>
 
+  <!-- GALLERY LIGHTBOX -->
+  <div id="gallery-lightbox" class="lightbox hidden">
+    <button id="lightbox-close" class="glass-btn lightbox-close" aria-label="Tutup">✕</button>
+    <button id="lightbox-prev" class="glass-btn lightbox-nav lightbox-prev" aria-label="Sebelumnya">‹</button>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+    <button id="lightbox-next" class="glass-btn lightbox-nav lightbox-next" aria-label="Berikutnya">›</button>
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+    <p class="lightbox-hint">geser atau pakai tombol ‹ › &nbsp;•&nbsp; cubit buat zoom</p>
+  </div>
+
   <!-- LETTER -->
   <section id="letter" class="section">
     <div class="section-head reveal">
       <p class="eyebrow">// surat</p>
       <h2>Untuk Diri Sendiri</h2>
     </div>
-    <div class="letter-card glass reveal">
-      <p class="letter-body" id="letter-body">
-Hei, Rapi.
-
-Kalau kamu baca ini, artinya kamu berhasil bikin website ulang tahun buat diri sendiri —
-khas banget, ya. Tapi lebih dari itu, ini pengingat kecil tentang satu tahun yang udah dilewatin:
-setiap baris kode yang error terus akhirnya jalan, setiap project yang deploy jam 2 pagi dari HP,
-dan setiap kali kamu mikir "ah nanggung, lanjut dulu deh."
-
-Tahun ini boleh capek, boleh banyak yang belum kelar, tapi kamu tetap nyalain layar dan bikin sesuatu.
-Itu bukan hal kecil.
-
-Semoga tahun depan lebih baik. Lebih banyak project yang kelar, lebih sehat, lebih banyak waktu
-buat orang-orang yang sayang sama kamu — termasuk Endah.
-
-Selamat ulang tahun. Terus jalan, terus belajar, terus rapi.
-
-— kamu, hari ini.
-      </p>
+    <div class="letter-card glass reveal" id="letter-card">
+      <p class="letter-body" id="letter-body"><span id="letter-typed"></span><span class="letter-cursor" id="letter-cursor">▍</span></p>
+      <noscript>
+        <p class="letter-body">
+Hei, Rapi. Kalau kamu baca ini, artinya kamu berhasil bikin website ulang tahun buat diri sendiri.
+Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
+        </p>
+      </noscript>
     </div>
   </section>
 
@@ -163,8 +164,9 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi.
 <script src="js/countdown.js?v=2"></script>
 <script src="js/three-scene.js?v=3"></script>
 <script src="js/audio.js?v=2"></script>
-<script src="js/gallery.js?v=2"></script>
+<script src="js/gallery.js?v=3"></script>
 <script src="js/gift.js?v=3"></script>
+<script src="js/letter.js?v=1"></script>
 <script src="js/scroll.js?v=1"></script>
 <script src="js/main.js?v=2"></script>
 </body>
