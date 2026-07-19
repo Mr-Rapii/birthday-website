@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -131,6 +131,61 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
     </div>
   </section>
 
+  <!-- CARD GENERATOR -->
+  <section id="card-gen" class="section">
+    <div class="section-head reveal">
+      <p class="eyebrow">// kartu ucapan</p>
+      <h2>Bikin Kartu Ucapanmu</h2>
+      <p class="section-sub">Pilih template, upload foto (opsional), download, share ke Status WhatsApp.</p>
+    </div>
+
+    <div class="card-gen-wrap reveal">
+      <div class="card-gen-controls glass">
+        <p class="card-gen-label">Template</p>
+        <div class="template-picker" id="template-picker">
+          <button class="template-swatch template-swatch-active" data-template="minimalis">
+            <span class="swatch-preview swatch-minimalis"></span>Minimalis
+          </button>
+          <button class="template-swatch" data-template="neon">
+            <span class="swatch-preview swatch-neon"></span>Neon
+          </button>
+          <button class="template-swatch" data-template="galaxy">
+            <span class="swatch-preview swatch-galaxy"></span>Galaxy
+          </button>
+          <button class="template-swatch" data-template="cyber">
+            <span class="swatch-preview swatch-cyber"></span>Cyber
+          </button>
+          <button class="template-swatch" data-template="gold">
+            <span class="swatch-preview swatch-gold"></span>Premium Gold
+          </button>
+        </div>
+
+        <p class="card-gen-label">Format</p>
+        <div class="format-picker" id="format-picker">
+          <button class="format-btn format-btn-active" data-format="story">Status WA (9:16)</button>
+          <button class="format-btn" data-format="square">Post (1:1)</button>
+        </div>
+
+        <p class="card-gen-label">Nama</p>
+        <input type="text" id="card-name-input" class="card-text-input" maxlength="24" value="Rapi" placeholder="Nama di kartu">
+
+        <p class="card-gen-label">Foto (opsional)</p>
+        <label class="glass-btn card-upload-btn" for="card-photo-input">📷 Pilih Foto</label>
+        <input type="file" id="card-photo-input" accept="image/*" class="hidden">
+
+        <div class="card-gen-actions">
+          <button id="card-download-btn" class="glass-btn card-action-btn">⬇ Download PNG</button>
+          <button id="card-share-btn" class="glass-btn card-action-btn">📤 Share ke WhatsApp</button>
+        </div>
+        <p class="card-gen-note" id="card-gen-note"></p>
+      </div>
+
+      <div class="card-gen-preview-wrap">
+        <canvas id="card-canvas" class="card-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer reveal">
     <div class="footer-divider"></div>
@@ -167,6 +222,7 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
 <script src="js/gallery.js?v=3"></script>
 <script src="js/gift.js?v=3"></script>
 <script src="js/letter.js?v=1"></script>
+<script src="js/card-generator.js?v=1"></script>
 <script src="js/scroll.js?v=1"></script>
 <script src="js/main.js?v=2"></script>
 </body>
