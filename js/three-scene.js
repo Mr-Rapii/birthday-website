@@ -13,8 +13,10 @@
 
   const canvas = document.getElementById('bg-canvas');
   const isMobile = window.innerWidth < 768;
-  // deteksi kasar device rendah: mobile + hardwareConcurrency kecil
-  const isLowEnd = isMobile && (navigator.hardwareConcurrency || 4) <= 4;
+  // deteksi kasar device rendah: mobile + hardwareConcurrency kecil,
+  // atau user ngaktifin "Mode Hemat Baterai" manual di settings
+  const lowPerfSetting = localStorage.getItem('lowPerfMode') === '1';
+  const isLowEnd = lowPerfSetting || (isMobile && (navigator.hardwareConcurrency || 4) <= 4);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 2000);
@@ -218,7 +220,7 @@
   scene.add(light);
   scene.add(new THREE.AmbientLight(0x223344, 0.6));
 
-  if(!isMobile && typeof THREE.Lensflare !== 'undefined'){
+  if(!isMobile && !isLowEnd && typeof THREE.Lensflare !== 'undefined'){
     const flareTex = (function(){
       const size = 256;
       const c = document.createElement('canvas');
@@ -300,7 +302,7 @@
   // BLOOM POST-PROCESSING (desktop only — berat buat mobile)
   // ==================================================
   let composer = null;
-  const bloomEnabled = !isMobile &&
+  const bloomEnabled = !isMobile && !isLowEnd &&
     typeof THREE.EffectComposer !== 'undefined' &&
     typeof THREE.UnrealBloomPass !== 'undefined';
 

@@ -1,31 +1,49 @@
 /* js/audio.js
    Toggles background music. Browsers block autoplay with sound,
-   so playback only starts after the user taps the button. */
+   so playback only starts after the user taps a button.
+   Exposes window.setMusicPlaying(bool) dan window.isMusicPlaying()
+   biar bisa disinkron sama toggle di settings panel. */
 (function(){
   const music = document.getElementById('bg-music');
   const btn = document.getElementById('music-toggle');
   let playing = false;
 
-  btn.addEventListener('click', ()=>{
-    if(playing){
-      music.pause();
-      btn.textContent = '🔇 Musik';
-    } else {
-      music.play().catch(()=>{
-        btn.textContent = '⚠️ file musik belum ada';
-      });
-      btn.textContent = '🔊 Musik';
-    }
-    playing = !playing;
-  });
+  function updateBtnLabel(){
+    btn.textContent = playing ? '🔊 Musik' : '🔇 Musik';
+  }
 
-  // expose so main.js can auto-start music right after intro if desired
+  function setPlaying(next){
+    if(next === playing) return;
+    if(next){
+      music.play().then(()=>{
+        playing = true;
+        updateBtnLabel();
+      }).catch(()=>{
+        playing = false;
+        updateBtnLabel();
+      });
+    } else {
+      music.pause();
+      playing = false;
+      updateBtnLabel();
+    }
+    if(typeof window.onMusicStateChanged === 'function'){
+      window.onMusicStateChanged(playing);
+    }
+  }
+
+  btn.addEventListener('click', ()=> setPlaying(!playing));
+
+  window.setMusicPlaying = setPlaying;
+  window.isMusicPlaying = ()=> playing;
+
+  // dipanggil main.js setelah app reveal, browser mungkin tetap blokir ini
   window.tryAutoplayMusic = function(){
     music.play().then(()=>{
       playing = true;
-      btn.textContent = '🔊 Musik';
+      updateBtnLabel();
     }).catch(()=>{
-      // autoplay blocked, user must tap button — this is expected/normal
+      // autoplay blocked, user harus tap tombol — ini normal
     });
   };
 })();

@@ -323,6 +323,79 @@ body{
   box-shadow:0 20px 60px rgba(0,0,0,0.5);
 }
 
+/* ---------- FLOATING BUTTONS ---------- */
+.floating-2{top:20px;right:100px;}
+.floating-3{top:20px;right:180px;}
+@media(max-width:480px){
+  .floating{top:14px;right:14px;font-size:.8rem;padding:8px 12px;}
+  .floating-2{top:14px;right:64px;}
+  .floating-3{display:none;} /* install button disembunyiin di layar sempit, cukup lewat gear/browser menu */
+}
+
+/* ---------- SETTINGS PANEL ---------- */
+.settings-panel{
+  position:fixed;top:70px;right:20px;z-index:210;
+  width:260px;padding:20px;
+  display:flex;flex-direction:column;gap:14px;
+}
+@media(max-width:480px){
+  .settings-panel{right:12px;left:12px;width:auto;}
+}
+.settings-head{display:flex;justify-content:space-between;align-items:center;}
+.settings-title{font-family:var(--font-display);font-weight:600;color:var(--text);}
+.settings-close{
+  background:none;border:none;color:var(--text-dim);font-size:1rem;cursor:pointer;
+}
+.settings-close:hover{color:var(--cyan);}
+.settings-row{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:.8rem;color:var(--text-dim);
+}
+.settings-toggle-group{display:flex;gap:6px;}
+.toggle-pill{
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;
+  color:var(--text-dim);font-family:var(--font-mono);font-size:.7rem;
+  padding:5px 12px;cursor:pointer;transition:.2s ease;
+}
+.toggle-pill-active{border-color:var(--cyan);color:var(--cyan);}
+.settings-note{
+  font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);
+  opacity:0.8;line-height:1.4;
+}
+
+.switch{
+  width:42px;height:24px;border-radius:100px;
+  background:rgba(255,255,255,0.1);border:1px solid var(--glass-border);
+  position:relative;cursor:pointer;padding:0;
+}
+.switch-knob{
+  position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+  background:var(--text-dim);transition:transform .2s ease, background .2s ease;
+}
+.switch-on{border-color:var(--cyan);}
+.switch-on .switch-knob{background:var(--cyan);transform:translateX(18px);}
+
+/* ---------- LIGHT THEME ---------- */
+:root[data-theme="light"]{
+  --bg:#f4f6fb;
+  --bg-soft:#e9edf5;
+  --text:#12141c;
+  --text-dim:#5a6272;
+  --glass:rgba(10,15,30,0.05);
+  --glass-border:rgba(10,15,30,0.12);
+}
+:root[data-theme="light"] #loading-screen,
+:root[data-theme="light"] #video-intro,
+:root[data-theme="light"] #story-mode,
+:root[data-theme="light"] .lightbox{
+  background:var(--bg);
+}
+:root[data-theme="light"] .grid-overlay{
+  background-image:
+    linear-gradient(rgba(34,229,255,0.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,229,255,0.12) 1px,transparent 1px);
+}
+
 /* ---------- GLASS / BUTTONS ---------- */
 .glass{
   background:var(--glass);

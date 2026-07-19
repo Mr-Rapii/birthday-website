@@ -6,9 +6,11 @@
 <title>Selamat Ulang Tahun — Rapi</title>
 <meta name="theme-color" content="#03030a">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 
@@ -30,13 +32,13 @@
 <!-- ================= INTRO VIDEO ================= -->
 <div id="video-intro" class="hidden">
   <video id="intro-video" src="assets/video/intro.mp4" playsinline muted></video>
-  <button id="skip-intro" class="glass-btn">Lewati ▸</button>
+  <button id="skip-intro" class="glass-btn" data-i18n="skip">Lewati ▸</button>
 </div>
 
 <!-- ================= STORY MODE ================= -->
 <div id="story-mode" class="hidden">
   <div class="story-line" id="story-line"></div>
-  <button id="skip-story" class="glass-btn">Lewati ▸</button>
+  <button id="skip-story" class="glass-btn" data-i18n="skip">Lewati ▸</button>
 </div>
 
 <!-- ================= MAIN APP ================= -->
@@ -44,18 +46,55 @@
 
   <canvas id="bg-canvas"></canvas>
 
-  <button id="music-toggle" class="glass-btn floating">🔇 Musik</button>
+  <button id="music-toggle" class="glass-btn floating" data-i18n="musicOff">🔇 Musik</button>
+  <button id="settings-toggle" class="glass-btn floating floating-2" aria-label="Pengaturan">⚙️</button>
+  <button id="install-btn" class="glass-btn floating floating-3 hidden">⬇ Install App</button>
+
+  <div id="settings-panel" class="settings-panel glass hidden">
+    <div class="settings-head">
+      <p class="settings-title" data-i18n="settingsTitle">Pengaturan</p>
+      <button id="settings-close" class="settings-close" aria-label="Tutup">✕</button>
+    </div>
+
+    <div class="settings-row">
+      <span data-i18n="settingTheme">Tema</span>
+      <div class="settings-toggle-group">
+        <button class="toggle-pill toggle-pill-active" data-theme="dark" data-i18n="themeDark">Dark</button>
+        <button class="toggle-pill" data-theme="light" data-i18n="themeLight">Light</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <span data-i18n="settingMusic">Musik</span>
+      <button id="settings-music-toggle" class="switch" aria-pressed="false"><span class="switch-knob"></span></button>
+    </div>
+
+    <div class="settings-row">
+      <span data-i18n="settingLowPerf">Mode Hemat Baterai</span>
+      <button id="settings-lowperf-toggle" class="switch" aria-pressed="false"><span class="switch-knob"></span></button>
+    </div>
+
+    <div class="settings-row">
+      <span data-i18n="settingLang">Bahasa</span>
+      <div class="settings-toggle-group">
+        <button class="toggle-pill toggle-pill-active" data-lang="id">ID</button>
+        <button class="toggle-pill" data-lang="en">EN</button>
+      </div>
+    </div>
+
+    <p class="settings-note" data-i18n="settingLangNote">Surat &amp; narasi tetap Bahasa Indonesia.</p>
+  </div>
 
   <!-- HERO -->
   <section id="hero" class="section">
     <div class="grid-overlay"></div>
     <div class="hero-content">
-      <p class="eyebrow">// selamat ulang tahun</p>
+      <p class="eyebrow" data-i18n="heroEyebrow">// selamat ulang tahun</p>
       <h1 class="hero-title">Halo, <span class="accent-cyan">Rapi</span><span class="accent-gold">.</span></h1>
-      <p class="hero-sub">Satu tahun lagi udah dilewatin. Ini persembahan kecil buat diri sendiri.</p>
+      <p class="hero-sub" data-i18n="heroSub">Satu tahun lagi udah dilewatin. Ini persembahan kecil buat diri sendiri.</p>
 
       <div class="countdown-card glass">
-        <div class="countdown-label" id="countdown-label">Menuju ulang tahun berikutnya</div>
+        <div class="countdown-label" id="countdown-label" data-i18n="countdownLabel">Menuju ulang tahun berikutnya</div>
         <div class="countdown-grid">
           <div class="countdown-unit"><span id="cd-days">00</span><small>Hari</small></div>
           <div class="countdown-unit"><span id="cd-hours">00</span><small>Jam</small></div>
@@ -74,7 +113,7 @@
           <span class="gift-ribbon-v"></span>
           <span class="gift-ribbon-h"></span>
         </button>
-        <p class="gift-hint" id="gift-hint">tap kadonya ▲</p>
+        <p class="gift-hint" id="gift-hint" data-i18n="giftHint">tap kadonya ▲</p>
 
         <div class="gift-reveal glass hidden" id="gift-reveal">
           <p class="gift-reveal-eyebrow">// kado kecil</p>
@@ -87,15 +126,15 @@
 
       <canvas id="confetti-canvas"></canvas>
 
-      <a href="#letter" class="scroll-cue">scroll ke bawah ↓</a>
+      <a href="#letter" class="scroll-cue" data-i18n="scrollCue">scroll ke bawah ↓</a>
     </div>
   </section>
 
   <!-- GALLERY -->
   <section id="gallery" class="section">
     <div class="section-head reveal">
-      <p class="eyebrow">// galeri</p>
-      <h2>Beberapa Momen</h2>
+      <p class="eyebrow" data-i18n="galleryEyebrow">// galeri</p>
+      <h2 data-i18n="galleryTitle">Beberapa Momen</h2>
     </div>
     <div class="gallery-grid reveal" id="gallery-grid">
       <!-- diisi otomatis oleh js/gallery.js, atau tambah manual <figure> di sini -->
@@ -111,14 +150,14 @@
     </div>
     <button id="lightbox-next" class="glass-btn lightbox-nav lightbox-next" aria-label="Berikutnya">›</button>
     <p class="lightbox-caption" id="lightbox-caption"></p>
-    <p class="lightbox-hint">geser atau pakai tombol ‹ › &nbsp;•&nbsp; cubit buat zoom</p>
+    <p class="lightbox-hint" data-i18n="lightboxHint">geser atau pakai tombol ‹ › &nbsp;•&nbsp; cubit buat zoom</p>
   </div>
 
   <!-- LETTER -->
   <section id="letter" class="section">
     <div class="section-head reveal">
-      <p class="eyebrow">// surat</p>
-      <h2>Untuk Diri Sendiri</h2>
+      <p class="eyebrow" data-i18n="letterEyebrow">// surat</p>
+      <h2 data-i18n="letterTitle">Untuk Diri Sendiri</h2>
     </div>
     <div class="letter-card glass reveal" id="letter-card">
       <p class="letter-body" id="letter-body"><span id="letter-typed"></span><span class="letter-cursor" id="letter-cursor">▍</span></p>
@@ -134,14 +173,14 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
   <!-- CARD GENERATOR -->
   <section id="card-gen" class="section">
     <div class="section-head reveal">
-      <p class="eyebrow">// kartu ucapan</p>
-      <h2>Bikin Kartu Ucapanmu</h2>
-      <p class="section-sub">Pilih template, upload foto (opsional), download, share ke Status WhatsApp.</p>
+      <p class="eyebrow" data-i18n="cardEyebrow">// kartu ucapan</p>
+      <h2 data-i18n="cardTitle">Bikin Kartu Ucapanmu</h2>
+      <p class="section-sub" data-i18n="cardSub">Pilih template, upload foto (opsional), download, share ke Status WhatsApp.</p>
     </div>
 
     <div class="card-gen-wrap reveal">
       <div class="card-gen-controls glass">
-        <p class="card-gen-label">Template</p>
+        <p class="card-gen-label" data-i18n="cardLabelTemplate">Template</p>
         <div class="template-picker" id="template-picker">
           <button class="template-swatch template-swatch-active" data-template="minimalis">
             <span class="swatch-preview swatch-minimalis"></span>Minimalis
@@ -160,22 +199,22 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
           </button>
         </div>
 
-        <p class="card-gen-label">Format</p>
+        <p class="card-gen-label" data-i18n="cardLabelFormat">Format</p>
         <div class="format-picker" id="format-picker">
-          <button class="format-btn format-btn-active" data-format="story">Status WA (9:16)</button>
-          <button class="format-btn" data-format="square">Post (1:1)</button>
+          <button class="format-btn format-btn-active" data-format="story" data-i18n="cardFormatStory">Status WA (9:16)</button>
+          <button class="format-btn" data-format="square" data-i18n="cardFormatSquare">Post (1:1)</button>
         </div>
 
-        <p class="card-gen-label">Nama</p>
-        <input type="text" id="card-name-input" class="card-text-input" maxlength="24" value="Rapi" placeholder="Nama di kartu">
+        <p class="card-gen-label" data-i18n="cardLabelName">Nama</p>
+        <input type="text" id="card-name-input" class="card-text-input" maxlength="24" value="Rapi" data-i18n-placeholder="cardNamePlaceholder" placeholder="Nama di kartu">
 
-        <p class="card-gen-label">Foto (opsional)</p>
-        <label class="glass-btn card-upload-btn" for="card-photo-input">📷 Pilih Foto</label>
+        <p class="card-gen-label" data-i18n="cardLabelPhoto">Foto (opsional)</p>
+        <label class="glass-btn card-upload-btn" for="card-photo-input" data-i18n="cardChoosePhoto">📷 Pilih Foto</label>
         <input type="file" id="card-photo-input" accept="image/*" class="hidden">
 
         <div class="card-gen-actions">
-          <button id="card-download-btn" class="glass-btn card-action-btn">⬇ Download PNG</button>
-          <button id="card-share-btn" class="glass-btn card-action-btn">📤 Share ke WhatsApp</button>
+          <button id="card-download-btn" class="glass-btn card-action-btn" data-i18n="cardDownload">⬇ Download PNG</button>
+          <button id="card-share-btn" class="glass-btn card-action-btn" data-i18n="cardShare">📤 Share ke WhatsApp</button>
         </div>
         <p class="card-gen-note" id="card-gen-note"></p>
       </div>
@@ -190,7 +229,7 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
   <footer class="footer reveal">
     <div class="footer-divider"></div>
     <p class="footer-made">Made with <span class="accent-gold">❤</span> by <strong>Raffi Ramadhan</strong></p>
-    <p class="footer-meta">Birthday Website v3.0 <span class="accent-cyan">•</span> © 2026 All Rights Reserved</p>
+    <p class="footer-meta"><span data-i18n="footerVersion">Birthday Website v3.0</span> <span class="accent-cyan">•</span> © 2026 All Rights Reserved</p>
     <div class="footer-socials">
       <!-- TODO ganti href sesuai username asli kamu -->
       <a href="https://github.com/Mr-Rapii" target="_blank" rel="noopener" class="glass-btn">GitHub</a>
@@ -217,13 +256,14 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi. — kamu, hari ini.
 <script src="js/video-intro.js?v=2"></script>
 <script src="js/story.js?v=2"></script>
 <script src="js/countdown.js?v=2"></script>
-<script src="js/three-scene.js?v=3"></script>
-<script src="js/audio.js?v=2"></script>
+<script src="js/three-scene.js?v=4"></script>
+<script src="js/audio.js?v=3"></script>
 <script src="js/gallery.js?v=3"></script>
 <script src="js/gift.js?v=3"></script>
 <script src="js/letter.js?v=1"></script>
 <script src="js/card-generator.js?v=1"></script>
 <script src="js/scroll.js?v=1"></script>
+<script src="js/settings.js?v=1"></script>
 <script src="js/main.js?v=2"></script>
 </body>
 </html>
