@@ -1,80 +1,63 @@
-// countdown.js - computes age and countdown towards next birthday
-
+/* js/countdown.js
+   Ganti BIRTHDATE di bawah kalau tanggal lahirnya beda.
+   Format: 'YYYY-MM-DD'. Dihitung pakai UTC biar konsisten di semua device. */
 (function(){
-  // Birthdate from user: 2010-08-14
-  const BIRTH = new Date(Date.UTC(2010,7,14,0,0,0)); // month index 7 == August
+  const BIRTHDATE = '2010-08-14'; // TODO: ganti sesuai tanggal lahir kamu
 
-  // Elements
-  const ageYearsEl = document.getElementById('ageYears');
-  const ageDaysEl = document.getElementById('ageDays');
-  const ageTimeEl = document.getElementById('ageTime');
-  const countdownTimerEl = document.getElementById('countdownTimer');
-  const countdownLabelEl = document.getElementById('countdownLabel');
+  const [by, bm, bd] = BIRTHDATE.split('-').map(Number);
 
-  function getNextBirthday(now){
-    const year = now.getUTCFullYear();
-    let next = new Date(Date.UTC(year,7,14,0,0,0));
-    if(now.getTime() > next.getTime()){
-      next = new Date(Date.UTC(year+1,7,14,0,0,0));
+  function nextBirthdayUTC(now){
+    let year = now.getUTCFullYear();
+    let target = Date.UTC(year, bm-1, bd, 0,0,0);
+    if(target <= now.getTime()){
+      target = Date.UTC(year+1, bm-1, bd, 0,0,0);
     }
-    return next;
+    return target;
   }
 
-  function calcAgeParts(now){
-    // Calculate age in years and remaining days/hms for display
-    const yrs = now.getUTCFullYear() - BIRTH.getUTCFullYear();
-    const hadBirthdayThisYear = (now.getUTCMonth() > BIRTH.getUTCMonth()) || (now.getUTCMonth() === BIRTH.getUTCMonth() && now.getUTCDate() >= BIRTH.getUTCDate());
-    const years = hadBirthdayThisYear ? yrs : yrs - 1;
-
-    // days since last birthday
-    const lastBirthdayYear = hadBirthdayThisYear ? now.getUTCFullYear() : now.getUTCFullYear()-1;
-    const lastBirthday = new Date(Date.UTC(lastBirthdayYear, BIRTH.getUTCMonth(), BIRTH.getUTCDate(), 0,0,0));
-    const diffMs = now - lastBirthday;
-    const days = Math.floor(diffMs / (1000*60*60*24));
-
-    // time of day
-    const h = String(now.getUTCHours()).padStart(2,'0');
-    const m = String(now.getUTCMinutes()).padStart(2,'0');
-    const s = String(now.getUTCSeconds()).padStart(2,'0');
-
-    return {years, days, time:`${h}:${m}:${s}`};
+  function currentAge(now){
+    let age = now.getUTCFullYear() - by;
+    const hadBirthdayThisYear =
+      (now.getUTCMonth()+1 > bm) ||
+      (now.getUTCMonth()+1 === bm && now.getUTCDate() >= bd);
+    if(!hadBirthdayThisYear) age--;
+    return age;
   }
 
-  function formatCountdown(ms){
-    if(ms <= 0) return '0d 0h 0m 0s';
-    const s = Math.floor(ms/1000);
-    const days = Math.floor(s / (3600*24));
-    const hours = Math.floor((s % (3600*24)) / 3600);
-    const mins = Math.floor((s % 3600) / 60);
-    const secs = s % 60;
-    return `${days}d ${hours}h ${mins}m ${secs}s`;
-  }
+  const elDays = document.getElementById('cd-days');
+  const elHours = document.getElementById('cd-hours');
+  const elMinutes = document.getElementById('cd-minutes');
+  const elSeconds = document.getElementById('cd-seconds');
+  const ageLine = document.getElementById('age-line');
+  const label = document.getElementById('countdown-label');
 
-  function tick(){
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function update(){
     const now = new Date();
-    // Age display
-    const age = calcAgeParts(new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())));
-    if(ageYearsEl) ageYearsEl.textContent = age.years;
-    if(ageDaysEl) ageDaysEl.textContent = age.days;
-    if(ageTimeEl) ageTimeEl.textContent = age.time;
-
-    // Countdown
-    const next = getNextBirthday(new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())));
-    const diff = next - now;
+    const target = nextBirthdayUTC(now);
+    let diff = target - now.getTime();
 
     if(diff <= 0){
-      if(countdownLabelEl) countdownLabelEl.textContent = 'Hari Ini Ulang Tahun Rafi';
-      if(countdownTimerEl) countdownTimerEl.textContent = '🎉 SELAMAT ULANG TAHUN 🎉';
-    }else{
-      if(countdownLabelEl) countdownLabelEl.textContent = 'Countdown ke ulang tahun:';
-      if(countdownTimerEl) countdownTimerEl.textContent = formatCountdown(diff);
+      label.textContent = 'Selamat ulang tahun hari ini! 🎉';
+      diff = 0;
     }
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const minutes = Math.floor((diff / (1000*60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    elDays.textContent = pad(days);
+    elHours.textContent = pad(hours);
+    elMinutes.textContent = pad(minutes);
+    elSeconds.textContent = pad(seconds);
+
+    const age = currentAge(now);
+    const nextAge = age + 1;
+    ageLine.textContent = `Sekarang umur ${age} tahun — menuju umur ${nextAge}`;
   }
 
-  // Start ticking every 1s
-  setInterval(tick, 1000);
-  // initial
-  tick();
-
-  window.__UBV2_countdown = { BIRTH };
+  update();
+  setInterval(update, 1000);
 })();

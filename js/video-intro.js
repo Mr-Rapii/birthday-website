@@ -1,31 +1,44 @@
-// video-intro.js - handles the skippable intro video
-
+/* js/video-intro.js
+   Shows intro video after loading, skippable, then reveals main app.
+   Exposes window.startVideoIntro() called from main.js */
 (function(){
-  const introModal = document.getElementById('introModal');
-  const introVideo = document.getElementById('introVideo');
-  const skipBtn = document.getElementById('skipIntro');
+  const introEl = document.getElementById('video-intro');
+  const video = document.getElementById('intro-video');
+  const skipBtn = document.getElementById('skip-intro');
+  const app = document.getElementById('app');
 
-  function show(){
-    if(!introModal) return;
-    introModal.classList.remove('hidden');
-    try{ introVideo.currentTime = 0; introVideo.play(); }catch(e){/* autoplay may be blocked until user interaction */}
+  function finishIntro(){
+    introEl.classList.add('hidden');
+    app.classList.remove('hidden');
+    if(typeof window.onAppRevealed === 'function'){
+      window.onAppRevealed();
+    }
   }
 
-  function hide(){
-    if(!introModal) return;
-    introModal.classList.add('hidden');
-    try{ introVideo.pause(); }catch(e){}
-  }
-
-  skipBtn?.addEventListener('click', ()=>{
-    hide();
-    window.dispatchEvent(new CustomEvent('ubv2:intro:ended'));
+  skipBtn.addEventListener('click', ()=>{
+    video.pause();
+    finishIntro();
   });
 
-  introVideo?.addEventListener('ended', ()=>{
-    hide();
-    window.dispatchEvent(new CustomEvent('ubv2:intro:ended'));
-  });
+  video.addEventListener('ended', finishIntro);
 
-  window.__UBV2_intro = { show, hide };
+  // if video file is missing/broken (placeholder), skip straight through
+  video.addEventListener('error', finishIntro);
+
+  window.startVideoIntro = function(){
+    introEl.classList.remove('hidden');
+    const playPromise = video.play();
+    if(playPromise){
+      playPromise.catch(()=>{
+        // autoplay blocked — show skip button prominently, user must tap
+        skipBtn.textContent = 'Mulai ▸';
+      });
+    }
+    // fallback: if placeholder video has no real duration, auto-advance after 6s
+    setTimeout(()=>{
+      if(!introEl.classList.contains('hidden') && (video.error || video.duration === Infinity || isNaN(video.duration))){
+        finishIntro();
+      }
+    }, 6000);
+  };
 })();

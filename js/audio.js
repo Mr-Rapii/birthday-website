@@ -1,27 +1,31 @@
-// audio.js - handle background music playback (must be triggered by user interaction)
-
+/* js/audio.js
+   Toggles background music. Browsers block autoplay with sound,
+   so playback only starts after the user taps the button. */
 (function(){
-  const bgMusic = document.getElementById('bgMusic');
-  let isPlaying = false;
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('music-toggle');
+  let playing = false;
 
-  async function play(){
-    if(!bgMusic) return;
-    try{
-      await bgMusic.play();
-      isPlaying = true;
-      document.getElementById('musicStatus')?.textContent = 'Playing';
-    }catch(e){
-      // autoplay blocked; will play after user interaction; swallow error
-      console.warn('Autoplay blocked or audio error', e);
+  btn.addEventListener('click', ()=>{
+    if(playing){
+      music.pause();
+      btn.textContent = '🔇 Musik';
+    } else {
+      music.play().catch(()=>{
+        btn.textContent = '⚠️ file musik belum ada';
+      });
+      btn.textContent = '🔊 Musik';
     }
-  }
+    playing = !playing;
+  });
 
-  function pause(){
-    if(!bgMusic) return;
-    bgMusic.pause();
-    isPlaying = false;
-    document.getElementById('musicStatus')?.textContent = 'Paused';
-  }
-
-  window.__UBV2_audio = { play, pause, get isPlaying(){return isPlaying} };
+  // expose so main.js can auto-start music right after intro if desired
+  window.tryAutoplayMusic = function(){
+    music.play().then(()=>{
+      playing = true;
+      btn.textContent = '🔊 Musik';
+    }).catch(()=>{
+      // autoplay blocked, user must tap button — this is expected/normal
+    });
+  };
 })();
