@@ -1,20 +1,17 @@
 /* js/loading.js
-   Loading screen: fake progress + particle canvas.
+   Loading screen: particle canvas + progress bar + typing-effect status lines.
    Calls window.onLoadingComplete() when done (defined in main.js). */
 (function(){
   // safety net: kalau ada error JS apapun di halaman, tampilkan di layar
-  // biar ketauan errornya (bukan cuma macet diem-diem)
   window.addEventListener('error', function(e){
-    const label = document.getElementById('loading-label') ||
-                  document.querySelector('.loading-label');
+    const label = document.getElementById('loading-label');
     if(label){
       label.textContent = 'Error: ' + e.message + ' (' + e.filename + ':' + e.lineno + ')';
       label.style.color = '#ff5c5c';
     }
   });
 
-  // safety net kedua: apapun yang terjadi, paksa lanjut abis 6 detik
-  // biar nggak nyangkut selamanya kalau ada bug lain
+  // safety net kedua: paksa lanjut abis 8 detik apapun yang terjadi
   setTimeout(function(){
     const screen = document.getElementById('loading-screen');
     if(screen && !screen.classList.contains('hidden')){
@@ -26,7 +23,7 @@
         }
       }, 600);
     }
-  }, 6000);
+  }, 8000);
 
   const canvas = document.getElementById('loading-particles');
   const ctx = canvas.getContext('2d');
@@ -39,7 +36,8 @@
   window.addEventListener('resize', resize);
   resize();
 
-  const count = window.innerWidth < 600 ? 40 : 90;
+  const isMobile = window.innerWidth < 768;
+  const count = isMobile ? 40 : 90;
   particles = Array.from({length: count}, () => ({
     x: Math.random()*w,
     y: Math.random()*h,
@@ -48,7 +46,9 @@
     a: Math.random()*0.5+0.2
   }));
 
+  let particlesRunning = true;
   function draw(){
+    if(!particlesRunning) return;
     ctx.clearRect(0,0,w,h);
     particles.forEach(p=>{
       p.y -= p.vy;
@@ -62,6 +62,38 @@
   }
   draw();
 
+  // ---------- typing effect ----------
+  const TYPE_LINES = [
+    'Initializing...',
+    'Loading memories...',
+    'Connecting...',
+    'Welcome, Rapi.'
+  ];
+  const typeEl = document.getElementById('loading-type');
+  let typeLineIdx = 0;
+  let typeCharIdx = 0;
+  let typeTimer = null;
+
+  function typeStep(){
+    if(!typeEl) return;
+    const currentLine = TYPE_LINES[typeLineIdx];
+    if(typeCharIdx <= currentLine.length){
+      typeEl.textContent = currentLine.slice(0, typeCharIdx);
+      typeCharIdx++;
+      typeTimer = setTimeout(typeStep, 45);
+    } else {
+      typeTimer = setTimeout(()=>{
+        if(typeLineIdx < TYPE_LINES.length - 1){
+          typeLineIdx++;
+          typeCharIdx = 0;
+          typeStep();
+        }
+      }, 500);
+    }
+  }
+  typeStep();
+
+  // ---------- progress bar ----------
   const fill = document.getElementById('loading-bar-fill');
   const percentLabel = document.getElementById('loading-percent');
   let progress = 0;
@@ -76,6 +108,8 @@
       setTimeout(tick, 120);
     } else {
       setTimeout(()=>{
+        particlesRunning = false;
+        if(typeTimer) clearTimeout(typeTimer);
         const screen = document.getElementById('loading-screen');
         screen.style.opacity = '0';
         setTimeout(()=>{
@@ -84,7 +118,7 @@
             window.onLoadingComplete();
           }
         }, 600);
-      }, 300);
+      }, 400);
     }
   }
   tick();

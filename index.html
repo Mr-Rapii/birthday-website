@@ -21,7 +21,7 @@
       <div class="loading-bar-fill" id="loading-bar-fill"></div>
     </div>
     <div class="loading-percent" id="loading-percent">0%</div>
-    <div class="loading-label">menyiapkan kejutan...</div>
+    <div class="loading-label" id="loading-label"><span id="loading-type"></span><span class="loading-cursor">▍</span></div>
   </div>
 </div>
 
@@ -136,6 +136,13 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi.
 <audio id="bg-music" src="assets/music/birthday.mp3" loop preload="none"></audio>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/objects/Lensflare.js"></script>
 <script src="js/loading.js"></script>
 <script src="js/video-intro.js"></script>
 <script src="js/story.js"></script>
