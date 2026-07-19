@@ -63,6 +63,71 @@ body{
 #intro-video{width:100%;height:100%;object-fit:cover;}
 #skip-intro{position:absolute;bottom:32px;right:32px;}
 
+/* ---------- STORY MODE ---------- */
+#story-mode{
+  position:fixed;inset:0;z-index:9997;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  padding:0 8vw;text-align:center;
+}
+.story-line{
+  font-family:var(--font-display);font-weight:500;
+  font-size:clamp(1.4rem,4.5vw,2.2rem);color:var(--text);
+  opacity:0;transform:translateY(12px);
+  transition:opacity 1s ease, transform 1s ease;
+}
+.story-line-visible{opacity:1;transform:translateY(0);}
+#skip-story{position:absolute;bottom:32px;right:32px;}
+
+/* ---------- GIFT BOX ---------- */
+.gift-wrap{
+  margin-top:36px;display:flex;flex-direction:column;
+  align-items:flex-start;gap:10px;position:relative;
+}
+.gift-box{
+  position:relative;width:88px;height:76px;
+  background:none;border:none;cursor:pointer;padding:0;
+}
+.gift-base{
+  position:absolute;bottom:0;left:0;width:88px;height:52px;
+  background:linear-gradient(135deg,#0d3a45,#08262e);
+  border:1px solid rgba(34,229,255,0.4);border-radius:6px;
+}
+.gift-lid{
+  position:absolute;top:14px;left:-4px;width:96px;height:20px;
+  background:linear-gradient(135deg,#134653,#0a2e38);
+  border:1px solid rgba(34,229,255,0.5);border-radius:6px;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .4s ease;
+  transform-origin:center bottom;
+}
+.gift-ribbon-v{
+  position:absolute;bottom:0;left:40px;width:8px;height:66px;
+  background:var(--gold);border-radius:2px;
+}
+.gift-ribbon-h{
+  position:absolute;top:14px;left:-4px;width:96px;height:8px;
+  background:var(--gold);border-radius:2px;
+}
+.gift-box-open .gift-lid{
+  transform:translateY(-30px) rotate(-18deg);opacity:0;
+}
+.gift-hint{
+  font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);
+}
+.gift-reveal{
+  max-width:420px;padding:20px 22px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.gift-reveal-visible{opacity:1;transform:translateY(0);}
+.gift-reveal-eyebrow{
+  font-family:var(--font-mono);color:var(--gold);font-size:.75rem;margin-bottom:8px;
+}
+.gift-reveal-text{color:var(--text-dim);font-size:.92rem;line-height:1.7;}
+
+#confetti-canvas{
+  position:fixed;inset:0;z-index:60;pointer-events:none;
+}
+
 /* ---------- GLASS / BUTTONS ---------- */
 .glass{
   background:var(--glass);

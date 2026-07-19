@@ -1,17 +1,17 @@
 /* js/video-intro.js
-   Shows intro video after loading, skippable, then reveals main app.
+   Shows intro video after loading, skippable, then hands off to Story Mode.
    Exposes window.startVideoIntro() called from main.js */
 (function(){
   const introEl = document.getElementById('video-intro');
   const video = document.getElementById('intro-video');
   const skipBtn = document.getElementById('skip-intro');
-  const app = document.getElementById('app');
 
   function finishIntro(){
     introEl.classList.add('hidden');
-    app.classList.remove('hidden');
-    if(typeof window.onAppRevealed === 'function'){
-      window.onAppRevealed();
+    if(typeof window.startStoryMode === 'function'){
+      window.startStoryMode();
+    } else if(typeof window.revealApp === 'function'){
+      window.revealApp();
     }
   }
 

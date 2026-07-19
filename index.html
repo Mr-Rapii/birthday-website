@@ -31,6 +31,12 @@
   <button id="skip-intro" class="glass-btn">Lewati ▸</button>
 </div>
 
+<!-- ================= STORY MODE ================= -->
+<div id="story-mode" class="hidden">
+  <div class="story-line" id="story-line"></div>
+  <button id="skip-story" class="glass-btn">Lewati ▸</button>
+</div>
+
 <!-- ================= MAIN APP ================= -->
 <div id="app" class="hidden">
 
@@ -56,6 +62,26 @@
         </div>
         <div class="age-line" id="age-line"></div>
       </div>
+
+      <div class="gift-wrap">
+        <button id="gift-box" class="gift-box" aria-label="Buka kado">
+          <span class="gift-lid"></span>
+          <span class="gift-base"></span>
+          <span class="gift-ribbon-v"></span>
+          <span class="gift-ribbon-h"></span>
+        </button>
+        <p class="gift-hint" id="gift-hint">tap kadonya ▲</p>
+
+        <div class="gift-reveal glass hidden" id="gift-reveal">
+          <p class="gift-reveal-eyebrow">// kado kecil</p>
+          <p class="gift-reveal-text" id="gift-reveal-text">
+            Selamat ulang tahun. Semoga tahun ini lebih banyak hal baik yang datang ke kamu —
+            lebih banyak project kelar, lebih sehat, lebih bahagia.
+          </p>
+        </div>
+      </div>
+
+      <canvas id="confetti-canvas"></canvas>
 
       <a href="#letter" class="scroll-cue">scroll ke bawah ↓</a>
     </div>
@@ -112,10 +138,12 @@ Selamat ulang tahun. Terus jalan, terus belajar, terus rapi.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="js/loading.js"></script>
 <script src="js/video-intro.js"></script>
+<script src="js/story.js"></script>
 <script src="js/countdown.js"></script>
 <script src="js/three-scene.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/gallery.js"></script>
+<script src="js/gift.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
