@@ -136,6 +136,79 @@ body{
   position:fixed;inset:0;z-index:60;pointer-events:none;
 }
 
+/* ---------- SCROLL PROGRESS BAR ---------- */
+#scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:200;
+  background:rgba(255,255,255,0.05);
+}
+#scroll-progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+  transition:width .1s linear;
+}
+
+/* ---------- SCROLL REVEAL ---------- */
+.reveal{
+  opacity:0;transform:translateY(36px);filter:blur(6px);
+  transition:opacity .8s ease, transform .8s ease, filter .8s ease;
+}
+.reveal-visible{
+  opacity:1;transform:translateY(0);filter:blur(0);
+}
+
+/* ---------- GIFT BOX v2 (glow, shake, light beam) ---------- */
+.gift-wrap{position:relative;}
+.gift-glow{
+  position:absolute;top:50%;left:50%;width:120px;height:100px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle, rgba(34,229,255,0.35), transparent 70%);
+  filter:blur(10px);opacity:0.5;
+  transition:opacity .3s ease, transform .3s ease;
+  pointer-events:none;
+}
+.gift-box:active .gift-glow,
+.gift-box.gift-box-charging .gift-glow{
+  opacity:1;transform:translate(-50%,-50%) scale(1.3);
+}
+.gift-box.gift-box-charging{
+  animation: gift-shake 0.4s ease-in-out;
+}
+@keyframes gift-shake{
+  0%,100%{transform:rotate(0deg);}
+  20%{transform:rotate(-4deg);}
+  40%{transform:rotate(4deg);}
+  60%{transform:rotate(-3deg);}
+  80%{transform:rotate(3deg);}
+}
+.gift-light-beam{
+  position:absolute;top:-40px;left:50%;width:2px;height:0;
+  transform:translateX(-50%);
+  background:linear-gradient(to top, rgba(245,196,83,0.9), transparent);
+  filter:blur(2px);
+  pointer-events:none;
+  transition:height .5s ease, width .5s ease, opacity .5s ease;
+  opacity:0;
+}
+.gift-box-open ~ .gift-light-beam,
+#gift-light-beam.gift-light-beam-active{
+  opacity:1;height:180px;width:40px;
+  filter:blur(14px);
+}
+
+/* ---------- FOOTER v2 ---------- */
+.footer{
+  position:relative;z-index:1;text-align:center;padding:48px 24px 32px;
+  font-family:var(--font-mono);font-size:.8rem;color:var(--text-dim);
+}
+.footer-divider{
+  max-width:280px;margin:16px auto;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(34,229,255,0.4), transparent);
+}
+.footer-made{color:var(--text);font-size:.9rem;margin-bottom:6px;}
+.footer-made strong{color:var(--cyan);font-weight:600;}
+.footer-meta{font-size:.75rem;color:var(--text-dim);margin-bottom:18px;}
+.footer-socials{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
 /* ---------- GLASS / BUTTONS ---------- */
 .glass{
   background:var(--glass);
@@ -228,12 +301,6 @@ h1,h2{font-family:var(--font-display);font-weight:700;line-height:1.1;}
 .letter-body{
   white-space:pre-line;color:var(--text-dim);line-height:1.9;
   font-size:1rem;
-}
-
-/* ---------- FOOTER ---------- */
-.footer{
-  position:relative;z-index:1;text-align:center;padding:32px;
-  font-family:var(--font-mono);font-size:.75rem;color:var(--text-dim);
 }
 
 @media(max-width:520px){

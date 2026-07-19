@@ -174,6 +174,43 @@
   planet.add(ring);
 
   // ==================================================
+  // SMALL DECORATIVE PLANETS (ngisi ruang kosong pas scroll)
+  // ==================================================
+  const smallPlanets = [];
+  const smallPlanetConfigs = [
+    { size: 1.4, color: 0x22e5ff, x: -30, y: -20, z: -50, driftSpeed: 0.15 },
+    { size: 2.2, color: 0xf5c453, x: 34, y: 40, z: -110, driftSpeed: 0.1 },
+    { size: 0.9, color: 0xffffff, x: -50, y: 55, z: -140, driftSpeed: 0.2 }
+  ];
+  smallPlanetConfigs.forEach(cfg=>{
+    const geo = new THREE.SphereGeometry(cfg.size, isMobile ? 10 : 16, isMobile ? 10 : 16);
+    const mat = new THREE.MeshBasicMaterial({ color: cfg.color, transparent:true, opacity:0.55 });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(cfg.x, cfg.y, cfg.z);
+    mesh.userData = { baseY: cfg.y, driftSpeed: cfg.driftSpeed, phase: Math.random()*Math.PI*2 };
+    scene.add(mesh);
+    smallPlanets.push(mesh);
+  });
+
+  // ==================================================
+  // SATELIT KECIL (melintas orbit pelan)
+  // ==================================================
+  const satelliteGroup = new THREE.Group();
+  const satBodyGeo = new THREE.BoxGeometry(0.6, 0.6, 0.6);
+  const satBodyMat = new THREE.MeshBasicMaterial({ color: 0xcfd6e3 });
+  const satBody = new THREE.Mesh(satBodyGeo, satBodyMat);
+  satelliteGroup.add(satBody);
+  const panelGeo = new THREE.BoxGeometry(1.6, 0.05, 0.5);
+  const panelMat = new THREE.MeshBasicMaterial({ color: 0x22e5ff, transparent:true, opacity:0.8 });
+  const panelL = new THREE.Mesh(panelGeo, panelMat);
+  panelL.position.x = -1.3;
+  const panelR = new THREE.Mesh(panelGeo, panelMat);
+  panelR.position.x = 1.3;
+  satelliteGroup.add(panelL, panelR);
+  satelliteGroup.userData = { orbitRadius: 55, orbitSpeed: 0.06, orbitY: 10, phase: 0 };
+  scene.add(satelliteGroup);
+
+  // ==================================================
   // LIGHTS + LENS FLARE (desktop only)
   // ==================================================
   const light = new THREE.PointLight(0xffffff, 1.2);
@@ -342,6 +379,21 @@
       mesh.position.y = baseY + Math.sin(t*1.5 + phase) * 1.2;
       mesh.material.opacity = 0.08 + Math.sin(t*2 + phase) * 0.03;
     });
+
+    smallPlanets.forEach(mesh=>{
+      const d = mesh.userData;
+      mesh.position.y = d.baseY + Math.sin(t*d.driftSpeed + d.phase) * 3;
+      mesh.rotation.y = t * (0.5 + d.driftSpeed);
+    });
+
+    const satD = satelliteGroup.userData;
+    satD.phase += 0.0016;
+    satelliteGroup.position.set(
+      Math.cos(satD.phase) * satD.orbitRadius,
+      satD.orbitY + Math.sin(satD.phase*1.7) * 6,
+      Math.sin(satD.phase) * satD.orbitRadius - 60
+    );
+    satelliteGroup.rotation.y = satD.phase;
 
     updateShootingStars();
 

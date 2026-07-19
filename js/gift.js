@@ -1,11 +1,14 @@
 /* js/gift.js
-   Gift box interaktif di hero: klik -> animasi buka + confetti + reveal pesan.
-   Edit teks reveal langsung di index.html (#gift-reveal-text). */
+   Gift box interaktif v2: getar (haptic), glow charging saat ditekan,
+   animasi buka + light beam, confetti 2 tahap (burst awal + firework susulan),
+   efek suara saat dibuka. Edit teks reveal langsung di index.html (#gift-reveal-text). */
 (function(){
   const box = document.getElementById('gift-box');
   const hint = document.getElementById('gift-hint');
   const reveal = document.getElementById('gift-reveal');
   const canvas = document.getElementById('confetti-canvas');
+  const lightBeam = document.getElementById('gift-light-beam');
+  const sfx = document.getElementById('gift-sfx');
   if(!box || !canvas) return;
 
   const ctx = canvas.getContext('2d');
@@ -22,20 +25,22 @@
 
   const colors = ['#22e5ff', '#f5c453', '#ffffff'];
 
-  function burstConfetti(originX, originY){
-    const count = window.innerWidth < 600 ? 60 : 120;
+  function spawnBurst(originX, originY, count, opts){
+    opts = opts || {};
+    const spreadV = opts.spreadV || 9;
+    const spreadH = opts.spreadH || 8;
     for(let i=0;i<count;i++){
       particles.push({
         x: originX,
         y: originY,
-        vx: (Math.random()-0.5)*8,
-        vy: Math.random()*-9 - 2,
+        vx: (Math.random()-0.5)*spreadH,
+        vy: Math.random()*-spreadV - 2,
         size: Math.random()*6+3,
         color: colors[Math.floor(Math.random()*colors.length)],
         rot: Math.random()*360,
         vrot: (Math.random()-0.5)*10,
         life: 0,
-        maxLife: 90 + Math.random()*40
+        maxLife: 80 + Math.random()*50
       });
     }
     if(!raf) animateConfetti();
@@ -67,18 +72,63 @@
     }
   }
 
+  // ---------- charging effect saat ditekan (sebelum kebuka) ----------
+  let chargeTimer = null;
+  function startCharging(){
+    if(opened) return;
+    box.classList.add('gift-box-charging');
+    if(navigator.vibrate) navigator.vibrate(15);
+  }
+  function stopCharging(){
+    box.classList.remove('gift-box-charging');
+  }
+
+  box.addEventListener('pointerdown', startCharging);
+  box.addEventListener('pointerup', stopCharging);
+  box.addEventListener('pointerleave', stopCharging);
+
   box.addEventListener('click', ()=>{
     if(opened) return;
     opened = true;
     box.classList.add('gift-box-open');
+    box.classList.remove('gift-box-charging');
     hint.classList.add('hidden');
 
+    // haptic feedback lebih kuat pas beneran kebuka
+    if(navigator.vibrate) navigator.vibrate([20, 40, 20]);
+
+    // sound effect (aman kalau file belum ada)
+    if(sfx){
+      sfx.currentTime = 0;
+      sfx.play().catch(()=>{ /* file belum ada, gapapa */ });
+    }
+
+    // light beam nyala
+    if(lightBeam) lightBeam.classList.add('gift-light-beam-active');
+
     const rect = box.getBoundingClientRect();
-    burstConfetti(rect.left + rect.width/2, rect.top + rect.height/2);
+    const originX = rect.left + rect.width/2;
+    const originY = rect.top + rect.height/2;
+
+    // tahap 1: burst confetti dari kotak
+    spawnBurst(originX, originY, window.innerWidth < 600 ? 50 : 90);
+
+    // tahap 2: firework susulan dari beberapa titik di atas layar
+    setTimeout(()=>{
+      const fireworkCount = window.innerWidth < 600 ? 2 : 3;
+      for(let i=0;i<fireworkCount;i++){
+        setTimeout(()=>{
+          const fx = window.innerWidth * (0.25 + Math.random()*0.5);
+          const fy = window.innerHeight * (0.2 + Math.random()*0.25);
+          spawnBurst(fx, fy, window.innerWidth < 600 ? 35 : 60, {spreadV:6, spreadH:11});
+          if(navigator.vibrate) navigator.vibrate(10);
+        }, i*350);
+      }
+    }, 400);
 
     setTimeout(()=>{
       reveal.classList.remove('hidden');
       requestAnimationFrame(()=> reveal.classList.add('gift-reveal-visible'));
-    }, 350);
+    }, 500);
   });
 })();
